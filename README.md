@@ -1,2 +1,2 @@
 ### El que lea esto, qsy hola
-<img width="710" height="961" alt="Pez-de-Frente" src="Pez-de-Frente.jpeg" />
+https://raw.githubusercontent.com/danilo-garcia-sa/DEP/refs/heads/main/IGNORAR/Pez-de-Frente.jpeg
