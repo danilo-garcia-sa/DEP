@@ -1,10 +1,21 @@
+/*
+ * ====================================================================
+ * Este programa lee la temperatura y la humedad locales
+ * utilizando un sensor físico DHT22. Permite al usuario alternar entre 
+ * dos pantallas en un display OLED SSD1306 presionando un botón:
+ * - Pantalla 1: Muestra un ícono de termómetro y la temperatura (°C).
+ * - Pantalla 2: Muestra un ícono de gota y la humedad (%).
+ * ====================================================================
+ */
+
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include "DHT.h"
 
-#define PIN_DHT 19
-#define PIN_BOTON 0 
+#define PIN_DHT 19 
+#define PIN_BOTON 0
+
 DHT dht(PIN_DHT, DHT22);
 Adafruit_SSD1306 display(128, 64, &Wire, -1);
 
@@ -82,7 +93,9 @@ int pantalla = 1;
 
 void setup() {
   dht.begin();
+  
   pinMode(PIN_BOTON, INPUT_PULLUP);
+  
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.clearDisplay();
   display.setTextColor(WHITE);
@@ -95,7 +108,7 @@ void loop() {
     } else {
       pantalla = 1;
     }
-    delay(300);
+    delay(300); // Pequeño delay anti-rebote (debounce) para evitar lecturas falsas
   }
 
   int t = (int) dht.readTemperature();
@@ -105,14 +118,16 @@ void loop() {
   
   if (pantalla == 1) {
     display.drawBitmap(0, 0, bmp_icon_termo, 64, 64, WHITE);
+    
     display.setTextSize(2);
     display.setCursor(70, 25);
     display.print(t);
-    display.write(0xf7);
+    display.write(0xf7); // Código extendido ASCII para renderizar el símbolo de grado (°)
     display.print("C");
   } 
   else {
     display.drawBitmap(0, 0, bmp_icon_gota, 64, 64, WHITE);
+    
     display.setTextSize(2);
     display.setCursor(70, 25);
     display.print(h);
@@ -122,4 +137,3 @@ void loop() {
   display.display();
   delay(50);
 }
-
